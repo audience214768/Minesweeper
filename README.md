@@ -336,8 +336,8 @@ Decision                result of PrintMap
 - 基础任务 60%
   - 按 OJ 得分给分
 - 进阶任务 35%
-  - `Rubbish`-`Baseline1` 20%
-  - `Baseline1`-`Baseline2` 10%
+  - `Rubbish`-`Baseline1` 10%
+  - `Baseline1`-`Baseline2` 20%
   - `Beat Baseline2` 5%
 - Code Review 20%
 
@@ -346,8 +346,8 @@ Decision                result of PrintMap
 - 基础任务 80%
   - 按 OJ 得分给分
 - 进阶任务 15%
-  - `Rubbish`-`Baseline1` 10%
-  - `Baseline1`-`Baseline2` 5%
+  - `Rubbish`-`Baseline1` 5%
+  - `Baseline1`-`Baseline2` 10%
 - Code Review 20%
 
 ## Special Thanks
