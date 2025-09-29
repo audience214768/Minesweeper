@@ -1,0 +1,4 @@
+/home/aud_xiejiaye/program/cpp/Minesweeper/src/build/CMakeFiles/server.dir
+/home/aud_xiejiaye/program/cpp/Minesweeper/src/build/CMakeFiles/client.dir
+/home/aud_xiejiaye/program/cpp/Minesweeper/src/build/CMakeFiles/edit_cache.dir
+/home/aud_xiejiaye/program/cpp/Minesweeper/src/build/CMakeFiles/rebuild_cache.dir

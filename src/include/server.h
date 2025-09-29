@@ -1,8 +1,11 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include<vector>
+#include "client.h"
 
 /*
  * You may need to define some global variables for the information of the game map here.
@@ -10,11 +13,97 @@
  * class is not taught yet. However, if you are member of A-class or have learnt the use of cpp class, member functions,
  * etc., you're free to modify this structure.
  */
+/*
 int rows;         // The count of rows of the game map. You MUST NOT modify its name.
 int columns;      // The count of columns of the game map. You MUST NOT modify its name.
 int total_mines;  // The count of mines of the game map. You MUST NOT modify its name. You should initialize this
                   // variable in function InitMap. It will be used in the advanced task.
+*/
 int game_state;  // The state of the game, 0 for continuing, 1 for winning, -1 for losing. You MUST NOT modify its name.
+
+const int shift_x[8] = {-1, 0, 1, -1, 1, -1, 0, 1},
+          shift_y[8] = {-1, -1, -1, 0, 0, 1, 1, 1}; //convient to traverse around
+
+class GameMap{
+  private:
+    int rows_, columns_, total_mines_, vis_count_, marked_mine_count_;
+    std::vector<std::vector<int>> grid_;                //record the information of the grid:n means the num of the around mines, -1 means mines
+    std::vector<std::vector<bool>> vis_;                 //recode if the grid is shown 
+  public:
+    int rows() {                                        //get the row of the map
+      return rows_;
+    }
+    int columns() {                                     //get the column of the map
+      return columns_;
+    }
+    int TotalMines() {                                 // get the total num of the mines
+      return total_mines_;
+    }
+    int GetGrid(int i, int j) {                         // get the value of the grid
+      return grid_[i][j];
+    }
+    int vis(int i, int j) {
+      vis_[i][j] = 1;
+      vis_count_++;
+      if(grid_[i][j] == -1) {
+        marked_mine_count_++;
+      }
+      if(vis_count_ - marked_mine_count_ == rows_ * columns_ - total_mines_) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    bool IsVis(int i, int j) {
+      return vis_[i][j];
+    }
+    void AddMine(int i, int j) {
+      grid_[i][j] = -1;
+      total_mines_++;
+      for(int k = 0 ; k < 8; k++) {
+        int x = i + shift_x[k], y = j + shift_y[k];
+        if(x >= 0 && x < rows_ && y >= 0 && y < rows_){
+          grid_[x][y]++;
+        }
+      }
+    }
+    void init() {
+      std::cin >> rows_ >> columns_;
+      getchar();                                     // read the enter
+      grid_.resize(rows_, std::vector<int>(columns_, 0));
+      vis_.resize(rows_, std::vector<bool>(columns_, 0));
+      total_mines_ = vis_count_ = marked_mine_count_ = 0;
+      for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < columns_; j++) {
+          char ch = getchar();
+          if(ch == 'X') {
+            AddMine(i, j);
+          }
+        }
+        getchar();
+      }
+    }
+    void print() {
+      for(int i = 0; i < rows_; i++) {
+        for(int j = 0; j < columns_; j++) {
+          if(vis_[i][j]) {
+            if(grid_[i][j] == -1){
+              std::cout << (game_state ? '@' : 'X');
+            } else {
+              std::cout << grid_[i][j];
+            }
+          } else {
+            std::cout << '?';
+          }
+        }
+        std::cout << std::endl;
+      }
+    }
+    void PrintResult() {
+      std::cout << vis_count_ << " " << marked_mine_count_ << std::endl;
+    }
+}map;
+
 
 /**
  * @brief The definition of function InitMap()
@@ -29,8 +118,7 @@ int game_state;  // The state of the game, 0 for continuing, 1 for winning, -1 f
  * would be initialized, with all the blocks unvisited.
  */
 void InitMap() {
-  std::cin >> rows >> columns;
-  // TODO (student): Implement me!
+  map.init();
 }
 
 /**
@@ -65,6 +153,20 @@ void InitMap() {
  */
 void VisitBlock(int r, int c) {
   // TODO (student): Implement me!
+  if(r < 0 || r > map.rows() || c < 0 || c > map.columns()) {
+    return ;
+  }
+  int grid = map.GetGrid(r, c);
+  if(grid == -1) {
+    game_state = -1;
+    return ;
+  }
+  game_state = map.vis(r, c);
+  if(grid == 0) {
+    for(int i = 0; i < 8; i++) {
+      VisitBlock(r + shift_x[i], c + shift_y[i]);
+    }
+  }
 }
 
 /**
@@ -102,6 +204,15 @@ void VisitBlock(int r, int c) {
  */
 void MarkMine(int r, int c) {
   // TODO (student): Implement me!
+  if(r < 0 || r > map.rows() || c < 0 || c > map.columns()) {
+    return ;
+  }
+  int grid = map.GetGrid(r, c);
+  if(grid != -1) {
+    game_state = -1;
+    return ;
+  }
+  map.vis(r, c);
 }
 
 /**
@@ -122,6 +233,21 @@ void MarkMine(int r, int c) {
  */
 void AutoExplore(int r, int c) {
   // TODO (student): Implement me!
+  int count = 0;
+  for(int i = 0; i < 8; i++) {
+    int x = r + shift_x[i], y = c + shift_y[i];
+    if(map.GetGrid(x, y) == -1 && map.IsVis(x, y)) {
+      count++;
+    }
+  }
+  if(count == map.GetGrid(r, c)) {
+    for(int i = 0; i < 8; i++) {
+      int x = r + shift_x[i], y = c + shift_y[i];
+      if(!map.IsVis(x, y)) {
+        VisitBlock(x, y);
+      }
+    }
+  }
 }
 
 /**
@@ -135,6 +261,12 @@ void AutoExplore(int r, int c) {
  */
 void ExitGame() {
   // TODO (student): Implement me!
+  if(game_state == 1) {
+    std::cout << "YOU WIN!" << std::endl;
+  } else {
+    std::cout << "GAME OVER!" << std::endl;
+  }
+  map.PrintResult();
   exit(0);  // Exit the game immediately
 }
 
@@ -164,6 +296,7 @@ void ExitGame() {
  */
 void PrintMap() {
   // TODO (student): Implement me!
+  map.print();
 }
 
 #endif

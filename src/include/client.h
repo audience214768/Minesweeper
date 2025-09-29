@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <utility>
-
+#include "server.h"
+/*
 extern int rows;         // The count of rows of the game map.
 extern int columns;      // The count of columns of the game map.
 extern int total_mines;  // The count of mines of the game map.
-
+*/
+extern GameMap map;
 // You MUST NOT use any other external variables except for rows, columns and total_mines.
 
 /**
