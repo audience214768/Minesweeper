@@ -3,7 +3,6 @@
 
 CMakeFiles/server.dir/basic.cpp.o
  /home/aud_xiejiaye/program/cpp/Minesweeper/src/basic.cpp
- /home/aud_xiejiaye/program/cpp/Minesweeper/src/include/client.h
  /home/aud_xiejiaye/program/cpp/Minesweeper/src/include/server.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
@@ -58,7 +57,6 @@ CMakeFiles/server.dir/basic.cpp.o
  /usr/include/c++/13/bits/stl_iterator_base_funcs.h
  /usr/include/c++/13/bits/stl_iterator_base_types.h
  /usr/include/c++/13/bits/stl_pair.h
- /usr/include/c++/13/bits/stl_relops.h
  /usr/include/c++/13/bits/stl_uninitialized.h
  /usr/include/c++/13/bits/stl_vector.h
  /usr/include/c++/13/bits/streambuf.tcc
@@ -101,7 +99,6 @@ CMakeFiles/server.dir/basic.cpp.o
  /usr/include/c++/13/tuple
  /usr/include/c++/13/type_traits
  /usr/include/c++/13/typeinfo
- /usr/include/c++/13/utility
  /usr/include/c++/13/vector
  /usr/include/ctype.h
  /usr/include/endian.h

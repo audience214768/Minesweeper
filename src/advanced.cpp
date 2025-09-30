@@ -16,6 +16,7 @@ bool batch_mode = false;
  */
 void Execute(int row, int column, int type) {
   std::string str;
+  std::cerr << row << " " << column << std::endl;
   if (type == 0) {
     VisitBlock(row, column);
   } else if (type == 1) {
@@ -26,6 +27,7 @@ void Execute(int row, int column, int type) {
     std::cerr << "Invalid type = " << type << std::endl;
     exit(-1);
   }
+  
   if (game_state != 0) {
     // PrintMap(); // this line may help you debug
     ExitGame();
