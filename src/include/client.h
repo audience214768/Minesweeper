@@ -3,14 +3,18 @@
 
 #include <iostream>
 #include <utility>
-#include "server.h"
-/*
+#include<vector>
+
 extern int rows;         // The count of rows of the game map.
 extern int columns;      // The count of columns of the game map.
 extern int total_mines;  // The count of mines of the game map.
-*/
-extern GameMap map;
+
 // You MUST NOT use any other external variables except for rows, columns and total_mines.
+
+const int shift_x[8] = {-1, 0, 1, -1, 1, -1, 0, 1},
+          shift_y[8] = {-1, -1, -1, 0, 0, 1, 1, 1}; //convient to traverse around
+
+std::vector<std::vector<int>> map; //-2 for unknown, -1 for mine , n for num of the mines around
 
 /**
  * @brief The definition of function Execute(int, int, bool)
@@ -40,6 +44,7 @@ void InitGame() {
   int first_row, first_column;
   std::cin >> first_row >> first_column;
   Execute(first_row, first_column, 0);
+  map.resize(rows, std::vector<int>(columns, 0));
 }
 
 /**
@@ -54,6 +59,20 @@ void InitGame() {
  */
 void ReadMap() {
   // TODO (student): Implement me!
+  for(int i = 0; i < rows; i++) {
+    for(int j = 0; j < columns; j++) {
+      char ch = getchar();
+      if(ch >= '0' && ch < '9') {
+        map[i][j] = ch - '0';
+      } else {
+        if(ch == '?') {
+          map[i][j] = -2;
+        } else {
+          map[i][j] = -1;
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -67,6 +86,17 @@ void Decide() {
   // while (true) {
   //   Execute(0, 0);
   // }
+  for(int i = 0; i < rows; i++) {
+    for(int j = 0; j < columns; j++) {
+      if(map[i][j] > '0' && map[i][j] < '9') {
+        int total_mines = map[i][j], unknow_grid = 0;
+        for(int k = 0; k < 8; k++) {
+          int x = i + shift_x[k], y = j + shift_y[k];
+          if(map[x][y] == -2) 
+        }
+      }
+    }
+  }
 }
 
 #endif
